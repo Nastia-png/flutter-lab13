@@ -66,51 +66,56 @@ class _NotesPageState extends State<NotesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Notes'),
+        backgroundColor: Color(0xFFB39DDB), // Задати колір фону AppBar
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Form(
-                    key: _formKey,
-                    child: TextFormField(
-                      controller: _noteController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter a note',
+            Form(
+              key: _formKey,
+              child: IntrinsicHeight( // Додаємо IntrinsicHeight, щоб уникнути зміщення
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Вирівнюємо елементи по верху
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _noteController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Enter a note',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
                     ),
-                  ),
+                    SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: _addNote,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.purple,
+                      ),
+                      child: const Text(
+                        'Add',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: _addNote,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
-                  ),
-                  child: const Text(
-                    'Add',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
+              ),
             ),
+            SizedBox(height: 20), // Простір між формою та списком
             Expanded(
               child: ListView.builder(
                 itemCount: _notes.length,
                 itemBuilder: (context, index) {
                   final note = _notes[index];
                   final formattedDate =
-                      DateFormat('yyyy-MM-dd HH:mm:ss').format(note.date);
+                  DateFormat('yyyy-MM-dd HH:mm:ss').format(note.date);
                   return Container(
                     margin: EdgeInsets.symmetric(vertical: 5.0),
                     padding: EdgeInsets.all(3.0),
