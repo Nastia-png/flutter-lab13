@@ -108,7 +108,7 @@ class _NotesPageState extends State<NotesPage> {
                 ),
               ),
             ),
-            SizedBox(height: 20), // Простір між формою та списком
+            SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
                 itemCount: _notes.length,
